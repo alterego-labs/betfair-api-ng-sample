@@ -1,3 +1,5 @@
+require 'json'
+
 module Api
   class BaseParser
 
@@ -9,6 +11,8 @@ module Api
 
     def jsonify(response)
       JSON.parse response
+    rescue
+      {}
     end
 
   end
