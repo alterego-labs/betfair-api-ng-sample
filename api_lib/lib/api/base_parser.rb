@@ -5,5 +5,11 @@ module Api
       raise "Must be reimplemented!"
     end
 
+  private
+
+    def jsonify(response)
+      JSON.parse response
+    end
+
   end
 end

@@ -1,4 +1,5 @@
 require './lib/api/base_provider'
+require './lib/api/bf/config'
 
 Dir['./lib/api/bf/parsers/soccer/**/*.rb'].each {|f| require f}
 
