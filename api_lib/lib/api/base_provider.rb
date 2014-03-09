@@ -1,3 +1,5 @@
+require 'active_support/inflector'
+
 module Api
   class BaseProvider
 
@@ -9,6 +11,10 @@ module Api
 
     def build_function(method)
       "list#{method.to_s.pluralize.camelize}"
+    end
+
+    def build_parser(data, sport)
+      "Api::BF::Parsers::#{sport.to_s.camelize}::#{data.to_s.camelize}Parser".constantize.new
     end
 
   end
