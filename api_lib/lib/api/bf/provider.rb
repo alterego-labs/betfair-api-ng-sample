@@ -4,7 +4,8 @@ module Api
   module BF
     class Provider < Api::BaseProvider
 
-      def fetch(function: "", parameters: {}, sport: "")
+      def fetch(data: "", parameters: {}, sport: "")
+        puts 'fetch called!'
         []
       end
 

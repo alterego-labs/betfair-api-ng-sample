@@ -3,7 +3,7 @@ require 'active_support/inflector'
 module Api
   class BaseRequester
 
-    attr_reader :provider_name, :sport, :method
+    attr_reader :provider_name, :sport, :data
 
     def initialize(provider)
       @provider_name = provider
