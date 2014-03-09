@@ -7,6 +7,7 @@ module Api
         class CompetitionParser < Api::BaseParser
 
           def parse(response: "")
+            puts 'parse called!'
             jsonify response
           end
 
