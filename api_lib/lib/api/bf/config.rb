@@ -9,7 +9,9 @@ module Api
                       :ssl_crt_filepath,
                       :session_key,
                       :login_url,
-                      :api_url
+                      :api_url,
+                      :username,
+                      :password
 
       end
 
