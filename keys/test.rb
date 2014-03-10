@@ -1,5 +1,6 @@
 require "net/https"
 require "uri"
+require 'json'
 
 crt = File.read("client-2048.crt")
 key = File.read("client-2048.key")
@@ -16,5 +17,5 @@ request["X-Application"] = "QvBPLfOmIWJXuxvd"
 request.set_form_data({"username" => "sergeg1990", "password" => "SeRgIo2014"})
 response = http.request request
 
-puts response.body
+puts JSON.parse(response.body)['loginStatus']
 
