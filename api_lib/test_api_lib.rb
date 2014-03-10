@@ -12,6 +12,8 @@ load_config = YAML.load_file("#{root}/config.yml")
 Api::BF::Config.application_key = load_config['application_key']
 Api::BF::Config.ssl_key_filepath = "#{root}/public/client-2048.key"
 Api::BF::Config.ssl_crt_filepath = "#{root}/public/client-2048.crt"
+Api::BF::Config.login_url = load_config['login_url']
+Api::BF::Config.api_url = load_config['api_url']
 
 #CREATING REQUEST FOR COMPETITIONS LIST
 requester = Api::Soccer::CompetitionRequester.new :bf
