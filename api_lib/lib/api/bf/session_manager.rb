@@ -3,20 +3,31 @@ require "uri"
 require 'json'
 require './lib/api/bf/config'
 require './lib/api/bf/constants'
+require './lib/api/bf/http_requester'
 
 module Api
   module BF
     class SessionManager
       include Api::BF::Constants
 
-      attr_reader :ssoid, :loginSuccess
+      attr_reader :loginSuccess
 
       def initialize
         @loginSuccess = false
+        setup_http_requester
       end
 
       def ssoid
         @ssoid ||= fetch_ssoid
+      end
+
+      def request_ssoid
+        ssoid
+        @loginSuccess
+      end
+
+      def expire_ssoid
+        @ssoid = nil
       end
 
     private
@@ -31,36 +42,16 @@ module Api
       end
 
       def get_login_response
-        JSON.parse build_http.request(build_request).body
+        JSON.parse @http_requester.do_request
       end
 
-      def login_uri
-        @_login_uri ||= URI.parse Api::BF::Config.login_url
-      end
-
-      def build_http
-        Net::HTTP.new(login_uri.host, login_uri.port).tap do |http|
-          setup_http_ssl http
+      def setup_http_requester
+        @http_requester = Api::BF::HttpRequester.new(Api::BF::Config.login_url).tap do |req|
+          req.set_ssl_files Api::BF::Config.ssl_crt_filepath, Api::BF::Config.ssl_key_filepath
+          req.set_request_headers { "Content-Type" => "application/x-www-form-urlencoded" }
+          req.set_auth_headers Api::BF::Config.application_key
+          req.set_form_data {"username" => Api::BF::Config.username, "password" => Api::BF::Config.password}
         end
-      end
-
-      def setup_http_ssl(http)
-        http.use_ssl = true
-        http.cert = OpenSSL::X509::Certificate.new read_ssl_file(Api::BF::Config.ssl_crt_filepath)
-        http.key = OpenSSL::PKey::RSA.new read_ssl_file(Api::BF::Config.ssl_key_filepath)
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      end
-
-      def build_request
-        Net::HTTP::Post.new(login_uri.request_uri).tap do |request|
-          request["Content-Type"] = "application/x-www-form-urlencoded"
-          request["X-Application"] = Api::BF::Config.application_key
-          request.set_form_data {"username" => Api::BF::Config.username, "password" => Api::BF::Config.password}
-        end
-      end
-
-      def read_ssl_file(path)
-        File.read path
       end
 
     end
