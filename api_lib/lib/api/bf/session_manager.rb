@@ -10,10 +10,9 @@ module Api
     class SessionManager
       include Api::BF::Constants
 
-      attr_reader :loginSuccess
+      attr_reader :loginStatus
 
       def initialize
-        @loginSuccess = false
         setup_http_requester
       end
 
@@ -23,11 +22,15 @@ module Api
 
       def request_ssoid
         ssoid
-        @loginSuccess
+        has_errors?
       end
 
       def expire_ssoid
         @ssoid = nil
+      end
+
+      def has_errors?
+        @loginStatus == SUCCESS_LOGIN
       end
 
     private
@@ -37,7 +40,7 @@ module Api
       end
 
       def process_response(response)
-        @loginSuccess = response['loginStatus'] == SUCCESS_LOGIN
+        @loginStatus = response['loginStatus']
         response['sessionToken']
       end
 
