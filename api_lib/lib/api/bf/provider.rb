@@ -2,6 +2,7 @@ require './lib/api/base_provider'
 require './lib/api/bf/config'
 require './lib/api/bf/session_manager'
 require './lib/api/bf/constants'
+require './lib/api/bf/http_requester'
 
 Dir['./lib/api/bf/parsers/soccer/**/*.rb'].each {|f| require f}
 
@@ -14,6 +15,7 @@ module Api
 
       def initialize
         @session_manager = Api::BF::SessionManager.new
+        setup_http_requester
       end
 
       def fetch(data: "", parameters: {}, sport: "")
@@ -26,43 +28,19 @@ module Api
     private
 
       def do_request(data, parameters, sport)
-        process_response build_http.request(build_request).body, build_parser(data, sport)
+        process_response @http_requester.do_request, build_parser(data, sport)
       end
 
       def process_response(response, parser)
         parser.parse response: response
       end
 
-      def api_uri
-        @_api_uri ||= URI.parse Api::BF::Config.api_url
-      end
-
-      def build_http
-        Net::HTTP.new(uri.host, uri.port).tap do |http|
-          http.use_ssl = true
+      def setup_http_requester
+        @http_requester = Api::BF::HttpRequester.new(Api::BF::Config.api_url).tap do |req|
+          req.set_request_headers { "Content-Type" => "application/x-www-form-urlencoded", "Accept" => "application/json" }
+          req.set_auth_headers Api::BF::Config.application_key, session_manager.ssoid
+          req.set_api_req_body build_function(current_method)
         end
-      end
-
-      def build_request
-        Net::HTTP::Post.new(uri.request_uri).tap do |request|
-          setup_request_body request
-          setup_request_headers request
-          setup_request_authentication request
-        end
-      end
-
-      def setup_request_body(request)
-        request.body = "{\"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/#{build_function(current_method)}\", \"params\": {\"filter\": { }}}"
-      end
-
-      def setup_request_headers(request)
-        request["Content-Type"] = "application/json"
-        request["Accept"] = "application/json"
-      end
-
-      def setup_request_authentication(request)
-        request["X-Application"] = Api::BF::Config.application_key
-        request["X-Authentication"] = session_manager.ssoid
       end
 
     end
