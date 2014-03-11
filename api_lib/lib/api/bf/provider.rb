@@ -37,7 +37,7 @@ module Api
 
       def setup_http_requester
         @http_requester = Api::BF::HttpRequester.new(Api::BF::Config.api_url).tap do |req|
-          req.set_request_headers { "Content-Type" => "application/x-www-form-urlencoded", "Accept" => "application/json" }
+          req.set_request_headers API_REQUEST_HEADERS
           req.set_auth_headers Api::BF::Config.application_key, session_manager.ssoid
           req.set_api_req_body build_function(current_method)
         end

@@ -48,7 +48,7 @@ module Api
       def setup_http_requester
         @http_requester = Api::BF::HttpRequester.new(Api::BF::Config.login_url).tap do |req|
           req.set_ssl_files Api::BF::Config.ssl_crt_filepath, Api::BF::Config.ssl_key_filepath
-          req.set_request_headers { "Content-Type" => "application/x-www-form-urlencoded" }
+          req.set_request_headers SESSION_REQUEST_HEADERS
           req.set_auth_headers Api::BF::Config.application_key
           req.set_form_data {"username" => Api::BF::Config.username, "password" => Api::BF::Config.password}
         end
