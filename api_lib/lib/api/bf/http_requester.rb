@@ -1,6 +1,7 @@
 require "net/https"
 require "uri"
 require 'json'
+require './lib/api/bf/http_responser'
 
 module Api
   module BF
@@ -16,7 +17,7 @@ module Api
       end
 
       def do_request
-        http.request(request).body
+        Api::BF::HttpResponser.new http.request(request)
       end
 
       def set_crt_file(path)

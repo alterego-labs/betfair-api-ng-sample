@@ -4,13 +4,12 @@ require 'json'
 require './lib/api/bf/config'
 require './lib/api/bf/constants'
 require './lib/api/bf/http_requester'
+require './lib/api/bf/http_responser'
 
 module Api
   module BF
     class SessionManager
       include Api::BF::Constants
-
-      attr_reader :loginStatus
 
       def initialize
         setup_http_requester
@@ -30,7 +29,11 @@ module Api
       end
 
       def has_errors?
-        @loginStatus == SUCCESS_LOGIN
+        !error_info.nil?
+      end
+
+      def error_info
+        @http_responser.try(:error_info?)
       end
 
     private
@@ -40,12 +43,12 @@ module Api
       end
 
       def process_response(response)
-        @loginStatus = response['loginStatus']
         response['sessionToken']
       end
 
       def get_login_response
-        JSON.parse @http_requester.do_request
+        @http_responser = @http_requester.do_request
+        @http_responser.result
       end
 
       def setup_http_requester

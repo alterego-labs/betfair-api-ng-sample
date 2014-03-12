@@ -8,7 +8,7 @@ module Api
 
           def parse(response: "")
             puts 'parse called!'
-            jsonify response
+            response
           end
 
         end
