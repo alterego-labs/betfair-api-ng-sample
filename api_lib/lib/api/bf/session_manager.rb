@@ -23,7 +23,7 @@ module Api
 
       def request_ssoid
         ssoid
-        has_errors?
+        !has_errors?
       end
 
       def expire_ssoid

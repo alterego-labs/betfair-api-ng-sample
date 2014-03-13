@@ -21,11 +21,12 @@ Api::BF::Config.username = load_config['betfair']['username']
 Api::BF::Config.password = load_config['betfair']['password']
 
 #CREATING REQUEST FOR COMPETITIONS LIST
-# requester = Api::Soccer::CompetitionRequester.new :bf
-# res = requester.load
+requester = Api::Soccer::CompetitionRequester.new :bf
+res = requester.load
+binding.pry
 
 #PUTS RESULTS
-# puts res
+puts res
 
-session_manager = Api::BF::SessionManager.new
-puts session_manager.ssoid
+# session_manager = Api::BF::SessionManager.new
+# puts session_manager.ssoid

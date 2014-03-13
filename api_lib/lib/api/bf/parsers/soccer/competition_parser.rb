@@ -1,4 +1,5 @@
 require './lib/api/base_parser'
+require 'pry-nav'
 
 module Api
   module BF
@@ -7,8 +8,15 @@ module Api
         class CompetitionParser < Api::BaseParser
 
           def parse(response: {})
-            puts 'parse called!'
-            response['result']
+            response['result'].map { |r| process_competition(r) }
+          end
+
+        private
+
+          def process_competition(h)
+            h.merge! h['competition']
+            h.except! 'competition'
+            h
           end
 
         end

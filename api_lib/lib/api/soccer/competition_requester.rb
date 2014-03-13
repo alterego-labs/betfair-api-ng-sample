@@ -9,7 +9,6 @@ class Api::Soccer::CompetitionRequester < Api::Soccer::Requester
   end
 
   def load(parameters: {})
-    puts 'load called!'
     current_provider.fetch data: data, parameters: parameters, sport: sport
   end
 

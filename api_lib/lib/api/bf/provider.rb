@@ -4,6 +4,7 @@ require './lib/api/bf/session_manager'
 require './lib/api/bf/constants'
 require './lib/api/bf/http_requester'
 require './lib/api/bf/concerns/errorable'
+require 'pry-nav'
 
 Dir['./lib/api/bf/parsers/soccer/**/*.rb'].each {|f| require f}
 
@@ -17,13 +18,12 @@ module Api
 
       def initialize
         @session_manager = Api::BF::SessionManager.new
-        setup_http_requester
       end
 
       def fetch(data: "", parameters: {}, sport: "")
-        puts 'fetch called!'
         return [] unless session_manager.request_ssoid
         @current_method = data
+        setup_http_requester
         do_request data, parameters, sport
       end
 

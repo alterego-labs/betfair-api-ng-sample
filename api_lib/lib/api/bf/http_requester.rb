@@ -2,6 +2,7 @@ require "net/https"
 require "uri"
 require 'json'
 require './lib/api/bf/http_responser'
+require 'pry-nav'
 
 module Api
   module BF
