@@ -3,7 +3,7 @@ require './lib/api/bf/provider'
 
 class Api::Soccer::CompetitionRequester < Api::Soccer::Requester
 
-  def initialize(provider)
+  def initialize(provider: '')
     @data = :competition
     super provider
   end
