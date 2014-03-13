@@ -13,9 +13,9 @@ http.key = OpenSSL::PKey::RSA.new(key)
 http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 request = Net::HTTP::Post.new(uri.request_uri)
 request["Content-Type"] = "application/x-www-form-urlencoded"
-request["X-Application"] = "QvBPLfOmIWJXuxvd"
-request.set_form_data({"username" => "sergeg1990", "password" => "SeRgIo2014"})
+request["X-Application"] = "2TjRMEXG436kZcFo"
+request.set_form_data({"username" => "appshneg03", "password" => "JpE266ym"})
 response = http.request request
 
-puts JSON.parse(response.body)['loginStatus']
+puts JSON.parse(response.body)
 

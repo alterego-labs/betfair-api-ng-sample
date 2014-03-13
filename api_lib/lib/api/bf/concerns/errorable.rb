@@ -1,3 +1,5 @@
+require 'active_support/core_ext/object'
+
 module Api
   module BF
     module Concerns

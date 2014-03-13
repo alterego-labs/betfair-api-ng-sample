@@ -6,9 +6,9 @@ module Api
       module Soccer
         class CompetitionParser < Api::BaseParser
 
-          def parse(response: "")
+          def parse(response: {})
             puts 'parse called!'
-            response
+            response['result']
           end
 
         end

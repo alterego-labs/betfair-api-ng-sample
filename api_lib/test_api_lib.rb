@@ -1,6 +1,8 @@
 require './lib/api/soccer/competition_requester'
 require './lib/api/bf/config'
+require './lib/api/bf/session_manager'
 require 'yaml'
+require 'pry-nav'
 
 root = File.dirname(File.expand_path(__FILE__))
 
@@ -19,8 +21,11 @@ Api::BF::Config.username = load_config['betfair']['username']
 Api::BF::Config.password = load_config['betfair']['password']
 
 #CREATING REQUEST FOR COMPETITIONS LIST
-requester = Api::Soccer::CompetitionRequester.new :bf
-res = requester.load
+# requester = Api::Soccer::CompetitionRequester.new :bf
+# res = requester.load
 
 #PUTS RESULTS
-puts res
+# puts res
+
+session_manager = Api::BF::SessionManager.new
+puts session_manager.ssoid
