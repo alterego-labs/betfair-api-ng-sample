@@ -3,12 +3,14 @@ require './lib/api/bf/config'
 require './lib/api/bf/session_manager'
 require './lib/api/bf/constants'
 require './lib/api/bf/http_requester'
+require './lib/api/bf/concerns/errorable'
 
 Dir['./lib/api/bf/parsers/soccer/**/*.rb'].each {|f| require f}
 
 module Api
   module BF
     class Provider < Api::BaseProvider
+      include Api::BF::Concerns::Errorable
       include Api::BF::Constants
 
       attr_reader :session_manager, :current_method
@@ -28,7 +30,8 @@ module Api
     private
 
       def do_request(data, parameters, sport)
-        process_response @http_requester.do_request, build_parser(data, sport)
+        @http_responser = @http_requester.do_request
+        process_response @http_responser.result, build_parser(data, sport)
       end
 
       def process_response(response, parser)

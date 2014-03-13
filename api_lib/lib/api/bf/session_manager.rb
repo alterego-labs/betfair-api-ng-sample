@@ -5,10 +5,12 @@ require './lib/api/bf/config'
 require './lib/api/bf/constants'
 require './lib/api/bf/http_requester'
 require './lib/api/bf/http_responser'
+require './lib/api/bf/concerns/errorable'
 
 module Api
   module BF
     class SessionManager
+      include Api::BF::Concerns::Errorable
       include Api::BF::Constants
 
       def initialize
@@ -26,14 +28,6 @@ module Api
 
       def expire_ssoid
         @ssoid = nil
-      end
-
-      def has_errors?
-        !error_info.nil?
-      end
-
-      def error_info
-        @http_responser.try(:error_info?)
       end
 
     private
