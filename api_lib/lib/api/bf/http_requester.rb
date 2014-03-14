@@ -56,8 +56,8 @@ module Api
         request.body = body
       end
 
-      def set_api_req_body(method, filter = "{}")
-        request.body = "{\"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/#{method}\", \"params\": {\"filter\": #{filter}}}"
+      def set_api_req_body(method, filter = {})
+        set_request_body "{\"jsonrpc\": \"2.0\", \"method\": \"SportsAPING/v1.0/#{method}\", \"params\": {\"filter\": #{filter.to_json}}}"
       end
 
     private
