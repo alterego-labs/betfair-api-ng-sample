@@ -9,7 +9,7 @@ class Api::Soccer::CompetitionRequester < Api::Soccer::Requester
   end
 
   def load(parameters: {})
-    current_provider.fetch data: data, parameters: parameters, sport: sport
+    make_fetch parameters: parameters
   end
 
 end
